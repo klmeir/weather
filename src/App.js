@@ -12,7 +12,9 @@ function App() {
       <div className="contenedor-form">
         <div className="row">
           <div className="col m6 s12">
-            <Form />
+            <Form 
+              
+            />
           </div>
           <div className="col m6 s12">
             2
