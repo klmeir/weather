@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import Header from './components/Header';
 import Form from './components/Form';
 import Weather from './components/Weather';
+import Error from './components/Error';
 
 function App() {
 
@@ -11,13 +12,13 @@ function App() {
   });
   const [consult, setConsult] = useState(false);
   const [result, setResult] = useState({});
+  const [error, setError] = useState(false);
 
   const { city, country } = search;
 
   useEffect(() => {
     const getDataAPI = async () => {
-      if (consult) {
-        console.log("call getDataAPI");
+      if (consult) {        
         const appId = "5fe09f6f04c1ce67bd933fc70eac82b3";
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${appId}`;
 
@@ -26,10 +27,23 @@ function App() {
 
         setResult(result);
         setConsult(false);
+
+        if(result.cod === "404") {
+          setError(true);
+        }else {
+          setError(false);
+        }
       }
     };
     getDataAPI();
-  }, [consult]);
+  }, [consult]);  
+
+  let component;
+  if (error) {
+    component = <Error message="No hay resultados" />;
+  } else {
+    component = <Weather result={result} />;
+  }
 
   return (
     <Fragment>
@@ -47,9 +61,7 @@ function App() {
             />
           </div>
           <div className="col m6 s12">
-            <Weather 
-              result={result}
-            />
+            {component}
           </div>
         </div>
       </div>
