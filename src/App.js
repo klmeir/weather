@@ -36,6 +36,7 @@ function App() {
       }
     };
     getDataAPI();
+    // eslint-disable-next-line
   }, [consult]);  
 
   let component;
